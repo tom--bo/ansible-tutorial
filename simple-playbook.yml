@@ -17,3 +17,26 @@
     - name: be sure httpd is running and enabled
       service: name=httpd state=running enabled=yes 
 
+    - name: change owner
+      file: dest=/var/www/html owner={{username}} recurse=yes
+
+    - name: copy index.html
+      copy: src=./index.html dest=/var/www/html/index.html owner={{username}}
+    - name: copy index.php
+      copy: src=./index.php dest=/var/www/html/index.php owner={{username}}
+
+    - name: install php packages
+      yum: name={{item}} state=latest
+      with_items: 
+        - php
+        - php-devel
+        - php-mbstring
+        - php-mysql
+      notify:
+        - restart apache
+        
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+
+
