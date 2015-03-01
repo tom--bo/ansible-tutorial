@@ -34,6 +34,16 @@
         - php-mysql
       notify:
         - restart apache
+
+#mysql のインストール、設定
+    - name: install mysql
+      yum: name=mysql-server state=latest
+    - name: start and check mysql
+      service: name=mysqld state=running enabled=yes
+    - name: create databases
+      mysql_db: name=mydb state=present
+    - name: create a user for mydb
+      mysql_user: name=dbuser password=dbpassword priv=mydb.*:ALL state=present
         
   handlers:
     - name: restart apache
