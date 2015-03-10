@@ -1,0 +1,22 @@
+---
+- hosts: test-servers
+  sudo : yes
+  vars : 
+    username: t.otsuka
+#  vars_prompt: 
+#    username: "Enter username"
+
+  tasks:
+    - name: setting elasticsearch.repo for yum install
+      copy: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+
+    - name: install yum packages
+      yum: name={{item}} state=latest
+      with_items: 
+        - java-1.7.0-openjdk
+        - elasticsearch
+        - vim
+
+    - name: install elasticsearch plugin
+      shell: /usr/share/elasticsearch/bin/plugin --install elasticsearch/elasticsearch-analysis-kuromoji/2.4.2
+
