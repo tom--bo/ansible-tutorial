@@ -1,4 +1,4 @@
 #大阪メモ
 今のyamlはCentos6用のもの
     7でやったらエラーはいた
-    
+ansible-playbook -i myhost lamp.yml -k 
